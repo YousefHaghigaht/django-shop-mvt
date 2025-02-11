@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input class="btn btn-primary" type="submit" value="Register">
+        <a href="{% url 'accounts:resend_code' %}" class="{% if not disable_btn %}disabled{% endif %} btn btn-info">Resend</a>
+
+    </form>
+
+{% endblock %}
