@@ -20,3 +20,5 @@ Features
 
 10.Using sessions
 
+11.Dockerized project
+
