@@ -2,7 +2,7 @@
 services:
   db:
     container_name: db
-    image: postgres
+    image: postgres:17.2
     environment:
       - POSTGRES_DB=django_shop_mvt
       - POSTGRES_USER=postgres
@@ -62,7 +62,7 @@ services:
 
   redis:
     container_name: redis
-    image: redis
+    image: redis:7.4.2
     networks: 
       - shop_mvt
     restart: always
