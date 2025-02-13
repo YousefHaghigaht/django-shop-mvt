@@ -87,17 +87,17 @@ WSGI_APPLICATION = 'django_online_shop.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'test',
+        'NAME': 'django_shop_mvt',
         'USER': 'postgres',
         'PASSWORD':'postgres',
-        'HOST':'127.0.0.1',
+        'HOST':'db',
         'PORT':'5432',
     }
 }
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379",
+        "LOCATION": "redis://redis:6379",
     }
 }
 
@@ -155,12 +155,10 @@ AUTH_USER_MODEL = 'accounts.User'
 
 # Arvan Cloud Storage
 DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
-AWS_ACCESS_KEY_ID = ''#Your access key
-AWS_SECRET_ACCESS_KEY = ''#Your secret key
-AWS_ACCESS_KEY_ID = ''
-AWS_SECRET_ACCESS_KEY = ''
+AWS_ACCESS_KEY_ID = '8590f511-f37c-4949-b301-9ba31db885a9'#Your access key
+AWS_SECRET_ACCESS_KEY = '4ae05683b1e862250966b8483232ebef12ef603ba391968b34bfdbc5511f684e'#Your secret key
 AWS_S3_ENDPOINT_URL = 'https://s3.ir-thr-at1.arvanstorage.ir'
-AWS_STORAGE_BUCKET_NAME = ''
+AWS_STORAGE_BUCKET_NAME = 'django-shop-2'
 AWS_SERVICE_NAME = 's3'
 AWS_LOCAL_STORAGE =f'{BASE_DIR}/dl/'
 

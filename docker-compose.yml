@@ -1,0 +1,94 @@
+
+services:
+  db:
+    container_name: db
+    image: postgres
+    environment:
+      - POSTGRES_DB=django_shop_mvt
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - shop_mvt
+    volumes:
+      - shop_data:/var/lib/postgresql/data/
+    restart: always
+
+  rabbitmq:  
+    container_name: rabbitmq 
+    image: rabbitmq:3-management  
+    ports:  
+      - "5672:5672" 
+      - "15672:15672"  
+    environment:  
+      RABBITMQ_DEFAULT_USER: guest  
+      RABBITMQ_DEFAULT_PASS: guest  
+    networks:  
+      - shop_mvt 
+    restart: always
+    
+  celery_worker:
+    container_name: celery_worker
+    build: .
+    command: "celery -A django_online_shop worker -l info"
+    depends_on:
+      - app
+      - rabbitmq
+      - db
+    restart: always
+    networks:
+      - shop_mvt
+    environment:
+      - C_FORCE_ROOT=true
+    volumes:
+      - .:/src/
+
+  celery_beat:
+    container_name: celery_beat
+    build: .
+    command: "celery -A django_online_shop beat --scheduler django --loglevel=info"
+    restart: always
+    networks:
+      - shop_mvt
+    environment:
+      - C_FORCE_ROOT=true
+    volumes:
+      - .:/code/
+    depends_on:
+      - app
+      - rabbitmq
+      - db
+
+  redis:
+    container_name: redis
+    image: redis
+    networks: 
+      - shop_mvt
+    restart: always
+    depends_on:
+      - app
+      - db
+    ports: 
+      - "6380:6379"
+
+  app:
+    build: .
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    container_name: app
+    volumes:
+      - .:/src/
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    networks:
+      - shop_mvt
+    restart: always
+
+networks:
+  shop_mvt:
+
+volumes:
+  shop_data:
+
